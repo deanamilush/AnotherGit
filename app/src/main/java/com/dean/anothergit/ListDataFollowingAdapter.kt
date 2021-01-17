@@ -18,9 +18,9 @@ class ListDataFollowingAdapter(private val listDataFollowing: ArrayList<DataUser
         notifyDataSetChanged()
     }
 
-    inner class ListDataHolder (private val binding: ItemUserBinding): RecyclerView.ViewHolder(binding.root) {
+    inner class ListDataHolder (itemView: View) : RecyclerView.ViewHolder(itemView){
         fun bind (user: DataUsers){
-            with(binding){
+            with(itemView){
                 Glide.with(itemView.context)
                     .load(user.avatar)
                     .apply(RequestOptions().override(55,55))
@@ -37,8 +37,9 @@ class ListDataFollowingAdapter(private val listDataFollowing: ArrayList<DataUser
         parent: ViewGroup,
         viewType: Int
     ): ListDataHolder {
-        val binding = ItemUserBinding.inflate(LayoutInflater.from(parent.context), parent, false)
-        return ListDataHolder(binding)
+        return ListDataHolder(
+            LayoutInflater.from(parent.context).inflate(R.layout.item_user, parent, false)
+        )
     }
 
     override fun getItemCount(): Int {

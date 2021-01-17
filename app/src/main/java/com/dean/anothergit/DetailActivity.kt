@@ -5,20 +5,13 @@ import android.os.Bundle
 import androidx.viewpager.widget.ViewPager
 import com.bumptech.glide.Glide
 import com.bumptech.glide.request.RequestOptions
-import com.dean.anothergit.databinding.ActivityMainBinding
 import com.google.android.material.tabs.TabLayout
 import kotlinx.android.synthetic.main.activity_detail.*
 import kotlinx.android.synthetic.main.activity_detail.user_name
-import kotlinx.android.synthetic.main.activity_detail.view.*
-import kotlinx.android.synthetic.main.activity_main.view.*
-import kotlinx.android.synthetic.main.fragment_following.view.*
 import kotlinx.android.synthetic.main.item_user.*
 import kotlinx.android.synthetic.main.item_user.view.*
 
 class DetailActivity : AppCompatActivity() {
-
-    private lateinit var binding: ActivityMainBinding
-
 
     companion object {
         const val EXTRA_DETAIL = "extra_detail"
@@ -28,7 +21,8 @@ class DetailActivity : AppCompatActivity() {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_detail)
 
-        val sectionsPagerAdapter = ViewPagerDetailAdapter(this, supportFragmentManager)
+        val sectionsPagerAdapter = ViewPagerAdapter(this, supportFragmentManager)
+        sectionsPagerAdapter.username = username?.username.toString()
         val viewPager: ViewPager = findViewById(R.id.view_pager)
         viewPager.adapter = sectionsPagerAdapter
         val tabs: TabLayout = findViewById(R.id.tabs)
@@ -44,7 +38,7 @@ class DetailActivity : AppCompatActivity() {
             .load(dataUser.avatar)
             .apply(RequestOptions().override(130, 110))
             .into(avatars)
-        full_names.text = dataUser.username
+        full_names.text = dataUser.name
         user_name.text = dataUser.username
         user_company.text = dataUser.company
         user_location.text = dataUser.location

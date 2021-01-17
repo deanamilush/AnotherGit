@@ -46,7 +46,7 @@ class FragmentFollowing : Fragment() {
         )
         showLoading(true)
 
-        followingViewModel.getListFollowing().observe(activity!!, Observer { listFollowing ->
+        followingViewModel.getListFollowing().observe(activity!!, Observer{ listFollowing ->
             if (listFollowing != null) {
                 adapter.setData(listFollowing)
                 showLoading(false)

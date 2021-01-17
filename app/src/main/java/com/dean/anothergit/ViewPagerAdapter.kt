@@ -5,13 +5,10 @@ import androidx.fragment.app.Fragment
 import androidx.fragment.app.FragmentManager
 import androidx.fragment.app.FragmentPagerAdapter
 
-class ViewPagerDetailAdapter(private val mContext: Context, fm: FragmentManager) :
+class ViewPagerAdapter(private val mContext: Context, fm: FragmentManager) :
         FragmentPagerAdapter(fm, BEHAVIOR_RESUME_ONLY_CURRENT_FRAGMENT) {
 
-    private val pages = listOf(
-            FragmentFollowing(),
-            FragmentFollowers()
-    )
+    var username: String? = null
 
     private val tabTitles = intArrayOf(
             R.string.following,
@@ -19,12 +16,16 @@ class ViewPagerDetailAdapter(private val mContext: Context, fm: FragmentManager)
     )
 
     override fun getItem(position: Int): Fragment {
-
-        return pages[position]
+        var fragment: Fragment? = null
+        when (position) {
+            0 -> fragment = FragmentFollowing()
+            1 -> fragment = FragmentFollowers()
+        }
+        return fragment as Fragment
     }
 
     override fun getCount(): Int {
-        return pages.size
+        return 2
     }
 
     override fun getPageTitle(position: Int): CharSequence? {

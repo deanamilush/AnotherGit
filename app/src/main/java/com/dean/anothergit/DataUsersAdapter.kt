@@ -35,7 +35,7 @@ class DataUsersAdapter (private val listDataUsers : ArrayList<DataUsers>): Recyc
         val data = listDataUsers[position]
         holder.itemView.setOnClickListener {
             val dataUserIntent = DataUsers(
-                data.username,
+                data.name,
                 data.username,
                 data.avatar,
                 data.company,

@@ -23,7 +23,7 @@ class FollowingViewModel : ViewModel() {
 
     fun getDataGit(context: Context, id: String) {
         val httpClient = AsyncHttpClient()
-        httpClient.addHeader("Authorization", "token fc8f6dd761e128137d6d26c739149721bc5b65dc")
+        httpClient.addHeader("Authorization", "token a2226c0ad03c26539a3c83b364b69b8f2fddd6fa")
         httpClient.addHeader("User-Agent", "request")
         val urlClient = "https://api.github.com/users/$id/following"
 
@@ -33,7 +33,7 @@ class FollowingViewModel : ViewModel() {
                 headers: Array<out Header>?,
                 responseBody: ByteArray
             ) {
-                val result = responseBody?.let { String(it) }
+                val result = String(responseBody)
                 Log.d(FragmentFollowing.TAG, result)
                 try {
                     val jsonArray = JSONArray(result)
@@ -68,7 +68,7 @@ class FollowingViewModel : ViewModel() {
 
     private fun getDataGitDetail(usernameLogin: String, context: Context) {
         val httpClient = AsyncHttpClient()
-        httpClient.addHeader("Authorization", "4cce74354b030121f655b43b46d170744a24a1a5")
+        httpClient.addHeader("Authorization", "a2226c0ad03c26539a3c83b364b69b8f2fddd6fa")
         httpClient.addHeader("User-Agent", "request")
         val urlClient = "https://api.github.com/users/$usernameLogin"
 
@@ -78,7 +78,7 @@ class FollowingViewModel : ViewModel() {
                 headers: Array<out Header>?,
                 responseBody: ByteArray
             ) {
-                val result = responseBody?.let { String(it) }
+                val result = String(responseBody)
                 Log.d(FragmentFollowing.TAG, result)
 
                 try {

@@ -62,11 +62,11 @@ class MainActivity : AppCompatActivity() {
             dataUser.username,
             dataUser.name,
             dataUser.avatar,
-            dataUser.company,
+            /*dataUser.company,
             dataUser.location,
             dataUser.repository,
             dataUser.followers,
-            dataUser.following
+            dataUser.following*/
         )
         val intent = Intent(this@MainActivity, DetailActivity::class.java)
         intent.putExtra(DetailActivity.EXTRA_DETAIL, dataUser)

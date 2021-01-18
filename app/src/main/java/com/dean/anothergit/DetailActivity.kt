@@ -21,13 +21,20 @@ class DetailActivity : AppCompatActivity() {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_detail)
 
-        val sectionsPagerAdapter = ViewPagerAdapter(this, supportFragmentManager)
-        sectionsPagerAdapter.username = fullName?.username.toString()
+        val viewPagerAdapter = ViewPagerAdapter(this, supportFragmentManager)
+        viewPagerAdapter.setData(EXTRA_DETAIL!!.toString())
         val viewPager: ViewPager = findViewById(R.id.view_pager)
-        viewPager.adapter = sectionsPagerAdapter
+        viewPager.adapter = viewPagerAdapter
         val tabs: TabLayout = findViewById(R.id.tabs)
         tabs.setupWithViewPager(viewPager)
         supportActionBar?.elevation = 0f
+
+        val mBundle = Bundle()
+        mBundle.putString(FragmentFollowers.ARG_USERNAME, EXTRA_DETAIL)
+        val mFollowerFragment = FragmentFollowers()
+        mFollowerFragment.arguments = mBundle
+        val mFollowingFragment = FragmentFollowing()
+        mFollowingFragment.arguments = mBundle
 
         setData()
     }

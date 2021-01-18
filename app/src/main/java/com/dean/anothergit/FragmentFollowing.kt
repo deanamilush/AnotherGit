@@ -1,6 +1,7 @@
 package com.dean.anothergit
 
 import android.os.Bundle
+import android.util.Log
 import androidx.fragment.app.Fragment
 import android.view.LayoutInflater
 import android.view.View
@@ -12,24 +13,14 @@ import kotlinx.android.synthetic.main.fragment_following.*
 
 class FragmentFollowing : Fragment() {
 
-    companion object {
-        val TAG = FragmentFollowing::class.java.simpleName
-        const val EXTRA_DETAIL = "extra_detail"
-        private val ARG_USERNAME = "username"
-
-        fun newInstance (username:String): FragmentFollowing{
-            val fragment = FragmentFollowing()
-            val bundle = Bundle()
-            bundle.putString(ARG_USERNAME, username)
-            fragment.arguments= bundle
-            return fragment
-        }
-
-    }
-
-    private var listData: ArrayList<DataUsers> = ArrayList()
     private lateinit var adapter: FollowingAdapter
     private lateinit var followingViewModel: FollowingViewModel
+    companion object {
+
+        const val ARG_USERNAME = "username"
+    }
+
+
 
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?,
@@ -42,32 +33,33 @@ class FragmentFollowing : Fragment() {
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
 
-        adapter = FollowingAdapter(listData)
-        followingViewModel = ViewModelProvider(
-            this, ViewModelProvider.NewInstanceFactory()
-        ).get(FollowingViewModel::class.java)
-
-          val dataUser = activity!!.intent.getParcelableExtra<DataUsers>(EXTRA_DETAIL) as DataUsers
-        config()
-
-        followingViewModel.getDataGit(
-                activity!!.applicationContext,
-                dataUser.username.toString()
-        )
+        showRecyclerView()
+        rvFollowing.setHasFixedSize(true)
         showLoading(true)
 
-        followingViewModel.getListFollowing().observe(activity!!, Observer { listFollowing ->
-            if (listFollowing != null) {
-                adapter.setData(listFollowing)
+        if (arguments != null) {
+            val username = arguments?.getString(ARG_USERNAME)
+            followingViewModel.setFollowing(username.toString())
+            Log.d("BundleFragment1", "$arguments")
+        }
+    }
+
+    private fun showRecyclerView() {
+        adapter = FollowingAdapter()
+        adapter.notifyDataSetChanged()
+
+        rvFollowing.layoutManager = LinearLayoutManager(context)
+        rvFollowing.adapter = adapter
+
+        followingViewModel = ViewModelProvider(this, ViewModelProvider.NewInstanceFactory())
+                .get(FollowingViewModel::class.java)
+
+        followingViewModel.getFollowing().observe(viewLifecycleOwner, Observer{ followingItems ->
+            if (followingItems != null) {
+                adapter.setData(followingItems)
                 showLoading(false)
             }
         })
-    }
-
-    private fun config() {
-        rvFollowing.layoutManager = LinearLayoutManager(activity)
-        rvFollowing.setHasFixedSize(true)
-        rvFollowing.adapter = adapter
     }
 
     private fun showLoading(state: Boolean) {

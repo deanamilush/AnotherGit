@@ -8,27 +8,14 @@ import com.bumptech.glide.Glide
 import com.bumptech.glide.request.RequestOptions
 import kotlinx.android.synthetic.main.item_user.view.*
 
-class FollowingAdapter(private val listDataFollowing: ArrayList<DataUsers>) :
-    RecyclerView.Adapter<FollowingAdapter.ListDataHolder>() {
+class FollowingAdapter : RecyclerView.Adapter<FollowingAdapter.ListDataHolder>() {
 
-    fun setData(item: ArrayList<DataUsers>) {
-        listDataFollowing.clear()
-        listDataFollowing.addAll(item)
+    private val mData = ArrayList<DataFollowing>()
+
+    fun setData(item: ArrayList<DataFollowing>) {
+        mData.clear()
+        mData.addAll(item)
         notifyDataSetChanged()
-    }
-
-    inner class ListDataHolder(itemView: View) : RecyclerView.ViewHolder(itemView) {
-        fun bind(dataFollowing: DataUsers) {
-            with(itemView) {
-                Glide.with(itemView.context)
-                    .load(dataFollowing.avatar)
-                    .apply(RequestOptions().override(100, 100))
-                    .into(avatar)
-
-                fullName.text = dataFollowing.name
-                username.text = dataFollowing.username
-            }
-        }
     }
 
     override fun onCreateViewHolder(
@@ -41,10 +28,24 @@ class FollowingAdapter(private val listDataFollowing: ArrayList<DataUsers>) :
     }
 
     override fun getItemCount(): Int {
-        return listDataFollowing.size
+        return mData.size
     }
 
     override fun onBindViewHolder(holder: ListDataHolder, position: Int) {
-        holder.bind(listDataFollowing[position])
+        holder.bind(mData[position])
+    }
+
+    inner class ListDataHolder(itemView: View) : RecyclerView.ViewHolder(itemView) {
+        fun bind(dataFollowing: DataFollowing) {
+            with(itemView) {
+                Glide.with(itemView.context)
+                        .load(dataFollowing.avatar)
+                        .apply(RequestOptions().override(100, 100))
+                        .into(avatar)
+
+                fullName.text = dataFollowing.name
+                username.text = dataFollowing.username
+            }
+        }
     }
 }

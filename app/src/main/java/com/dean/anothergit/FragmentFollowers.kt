@@ -8,6 +8,13 @@ import android.view.ViewGroup
 
 class FragmentFollowers : Fragment() {
 
+    private lateinit var adapter: FollowingAdapter
+    private lateinit var followingViewModel: FollowingViewModel
+    companion object {
+
+        const val ARG_USERNAME = "username"
+    }
+
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?,
         savedInstanceState: Bundle?

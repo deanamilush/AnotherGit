@@ -15,10 +15,20 @@ class FragmentFollowing : Fragment() {
     companion object {
         val TAG = FragmentFollowing::class.java.simpleName
         const val EXTRA_DETAIL = "extra_detail"
+        private val ARG_USERNAME = "username"
+
+        fun newInstance (username:String): FragmentFollowing{
+            val fragment = FragmentFollowing()
+            val bundle = Bundle()
+            bundle.putString(ARG_USERNAME, username)
+            fragment.arguments= bundle
+            return fragment
+        }
+
     }
 
     private var listData: ArrayList<DataUsers> = ArrayList()
-    private lateinit var adapter: ListDataFollowingAdapter
+    private lateinit var adapter: FollowingAdapter
     private lateinit var followingViewModel: FollowingViewModel
 
     override fun onCreateView(
@@ -32,7 +42,7 @@ class FragmentFollowing : Fragment() {
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
 
-        adapter = ListDataFollowingAdapter(listData)
+        adapter = FollowingAdapter(listData)
         followingViewModel = ViewModelProvider(
             this, ViewModelProvider.NewInstanceFactory()
         ).get(FollowingViewModel::class.java)
@@ -46,7 +56,7 @@ class FragmentFollowing : Fragment() {
         )
         showLoading(true)
 
-        followingViewModel.getListFollowing().observe(activity!!, Observer{ listFollowing ->
+        followingViewModel.getListFollowing().observe(activity!!, Observer { listFollowing ->
             if (listFollowing != null) {
                 adapter.setData(listFollowing)
                 showLoading(false)
@@ -55,9 +65,9 @@ class FragmentFollowing : Fragment() {
     }
 
     private fun config() {
-        recyclerViewFollowing.layoutManager = LinearLayoutManager(activity)
-        recyclerViewFollowing.setHasFixedSize(true)
-        recyclerViewFollowing.adapter = adapter
+        rvFollowing.layoutManager = LinearLayoutManager(activity)
+        rvFollowing.setHasFixedSize(true)
+        rvFollowing.adapter = adapter
     }
 
     private fun showLoading(state: Boolean) {

@@ -6,11 +6,10 @@ import android.view.ViewGroup
 import androidx.recyclerview.widget.RecyclerView
 import com.bumptech.glide.Glide
 import com.bumptech.glide.request.RequestOptions
-import com.dean.anothergit.databinding.ItemUserBinding
 import kotlinx.android.synthetic.main.item_user.view.*
 
-class ListDataFollowingAdapter(private val listDataFollowing: ArrayList<DataUsers>) :
-    RecyclerView.Adapter<ListDataFollowingAdapter.ListDataHolder>() {
+class FollowingAdapter(private val listDataFollowing: ArrayList<DataUsers>) :
+    RecyclerView.Adapter<FollowingAdapter.ListDataHolder>() {
 
     fun setData(item: ArrayList<DataUsers>) {
         listDataFollowing.clear()
@@ -18,17 +17,16 @@ class ListDataFollowingAdapter(private val listDataFollowing: ArrayList<DataUser
         notifyDataSetChanged()
     }
 
-    inner class ListDataHolder (itemView: View) : RecyclerView.ViewHolder(itemView){
-        fun bind (user: DataUsers){
-            with(itemView){
+    inner class ListDataHolder(itemView: View) : RecyclerView.ViewHolder(itemView) {
+        fun bind(dataFollowing: DataUsers) {
+            with(itemView) {
                 Glide.with(itemView.context)
-                    .load(user.avatar)
-                    .apply(RequestOptions().override(55,55))
+                    .load(dataFollowing.avatar)
+                    .apply(RequestOptions().override(100, 100))
                     .into(avatar)
 
-                fullName.text = user.name
-                username.text = user.username
-
+                fullName.text = dataFollowing.name
+                username.text = dataFollowing.username
             }
         }
     }

@@ -22,12 +22,13 @@ class DetailActivity : AppCompatActivity() {
         setContentView(R.layout.activity_detail)
 
         val sectionsPagerAdapter = ViewPagerAdapter(this, supportFragmentManager)
-        sectionsPagerAdapter.username = username?.username.toString()
+        sectionsPagerAdapter.username = fullName?.username.toString()
         val viewPager: ViewPager = findViewById(R.id.view_pager)
         viewPager.adapter = sectionsPagerAdapter
         val tabs: TabLayout = findViewById(R.id.tabs)
         tabs.setupWithViewPager(viewPager)
         supportActionBar?.elevation = 0f
+
         setData()
     }
 

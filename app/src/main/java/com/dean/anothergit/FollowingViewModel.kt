@@ -23,7 +23,7 @@ class FollowingViewModel : ViewModel() {
 
     fun getDataGit(context: Context, id: String) {
         val httpClient = AsyncHttpClient()
-        httpClient.addHeader("Authorization", "token 7ce3a33e28adbd2e6d7d18c9702548ca13573e4e")
+        httpClient.addHeader("Authorization", "token 341204ff62b4bdd5ca412bab0d43ee6f4314bd7a")
         httpClient.addHeader("User-Agent", "request")
         val urlClient = "https://api.github.com/users/$id/following"
 
@@ -68,7 +68,7 @@ class FollowingViewModel : ViewModel() {
 
     private fun getDataGitDetail(usernameLogin: String, context: Context) {
         val httpClient = AsyncHttpClient()
-        httpClient.addHeader("Authorization", "7ce3a33e28adbd2e6d7d18c9702548ca13573e4e")
+        httpClient.addHeader("Authorization", "token 341204ff62b4bdd5ca412bab0d43ee6f4314bd7a")
         httpClient.addHeader("User-Agent", "request")
         val urlClient = "https://api.github.com/users/$usernameLogin"
 
@@ -88,10 +88,6 @@ class FollowingViewModel : ViewModel() {
                     usersData.name = jsonObject.getString("name")
                     usersData.avatar = jsonObject.getString("avatar_url")
                     usersData.company = jsonObject.getString("company")
-                    usersData.location = jsonObject.getString("location")
-                    usersData.repository = jsonObject.getString("public_repos")
-                    usersData.followers = jsonObject.getString("followers")
-                    usersData.following = jsonObject.getString("following")
                     listFollowingNonMutable.add(usersData)
                     listFollowingMutable.postValue(listFollowingNonMutable)
                 } catch (e: Exception) {

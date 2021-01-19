@@ -16,6 +16,7 @@ class ViewPagerAdapter(private val mContext: Context, fm: FragmentManager) :
 
     companion object {
         const val USERNAME = "username"
+        const val EXTRA_DETAIL = "extra_detail"
     }
 
     @StringRes
@@ -27,10 +28,17 @@ class ViewPagerAdapter(private val mContext: Context, fm: FragmentManager) :
             0 -> {
                 fragment = FragmentFollowing()
                 val mBundle = Bundle()
-                mBundle.putString(USERNAME, getData())
+                mBundle.putString(EXTRA_DETAIL, getData())
                 fragment.arguments = mBundle
+                Log.d("BundleFragmentVP", fragment.arguments.toString())
             }
-            1 -> fragment = FragmentFollowers()
+            1 -> {
+                fragment = FragmentFollowers()
+                val mBundle = Bundle()
+                mBundle.putString(EXTRA_DETAIL, getData())
+                fragment.arguments = mBundle
+                Log.d("BundleFragmentVP1", fragment.arguments.toString())
+            }
         }
         return fragment as Fragment
     }

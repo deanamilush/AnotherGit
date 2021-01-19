@@ -21,8 +21,10 @@ class DetailActivity : AppCompatActivity() {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_detail)
 
+        setData()
+
         val viewPagerAdapter = ViewPagerAdapter(this, supportFragmentManager)
-        viewPagerAdapter.setData(EXTRA_DETAIL!!.toString())
+        viewPagerAdapter.setData(EXTRA_DETAIL)
         val viewPager: ViewPager = findViewById(R.id.view_pager)
         viewPager.adapter = viewPagerAdapter
         val tabs: TabLayout = findViewById(R.id.tabs)
@@ -35,8 +37,6 @@ class DetailActivity : AppCompatActivity() {
         mFollowerFragment.arguments = mBundle
         val mFollowingFragment = FragmentFollowing()
         mFollowingFragment.arguments = mBundle
-
-        setData()
     }
 
 

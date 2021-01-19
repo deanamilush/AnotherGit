@@ -1,7 +1,9 @@
 package com.dean.anothergit
 
 
+import android.content.Context
 import android.util.Log
+import android.widget.Toast
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
@@ -9,6 +11,7 @@ import com.loopj.android.http.AsyncHttpClient
 import com.loopj.android.http.AsyncHttpResponseHandler
 import cz.msebera.android.httpclient.Header
 import org.json.JSONArray
+import org.json.JSONObject
 import java.lang.Exception
 
 class FollowingViewModel : ViewModel() {
@@ -17,10 +20,10 @@ class FollowingViewModel : ViewModel() {
     fun setFollowing(username: String) {
         val listItems = ArrayList<DataFollowing>()
 
-        //val apiKey = BuildConfig.API_KEY
         val url = "https://api.github.com/users/$username/following"
+
         val asyncClient = AsyncHttpClient()
-        asyncClient.addHeader("Authorization", "token 4526e8b4e8787d4fec8cb665ae4d86ba07c9f530")
+        asyncClient.addHeader("Authorization", "token 8a1e321a721463f58be41e64a745f8086a55725c")
         asyncClient.addHeader("User-Agent", "request")
         asyncClient.get(url, object : AsyncHttpResponseHandler() {
             override fun onSuccess(

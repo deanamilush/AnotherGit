@@ -10,32 +10,28 @@ import androidx.lifecycle.Observer
 import androidx.lifecycle.ViewModelProvider
 import androidx.recyclerview.widget.LinearLayoutManager
 import kotlinx.android.synthetic.main.fragment_following.*
+import org.json.JSONArray
+import org.json.JSONObject
 
 class FragmentFollowing : Fragment() {
 
-    private lateinit var adapter: FollowingAdapter
     private lateinit var followingViewModel: FollowingViewModel
-    companion object {
+    private lateinit var adapter: FollowingAdapter
 
-        const val ARG_USERNAME = "username"
+    companion object {
+        const val  ARG_USERNAME = "username"
     }
 
-
-
-    override fun onCreateView(
-        inflater: LayoutInflater, container: ViewGroup?,
-        savedInstanceState: Bundle?
-    ): View? {
-        // Inflate the layout for this fragment
+    override fun onCreateView(inflater: LayoutInflater, container: ViewGroup?, savedInstanceState: Bundle?): View? {
         return inflater.inflate(R.layout.fragment_following, container, false)
     }
 
-    override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
-        super.onViewCreated(view, savedInstanceState)
+    override fun onActivityCreated(savedInstanceState: Bundle?) {
+        super.onActivityCreated(savedInstanceState)
 
         showRecyclerView()
         rvFollowing.setHasFixedSize(true)
-        showLoading(true)
+        loadingIndicator(true)
 
         if (arguments != null) {
             val username = arguments?.getString(ARG_USERNAME)
@@ -54,19 +50,19 @@ class FragmentFollowing : Fragment() {
         followingViewModel = ViewModelProvider(this, ViewModelProvider.NewInstanceFactory())
                 .get(FollowingViewModel::class.java)
 
-        followingViewModel.getFollowing().observe(viewLifecycleOwner, Observer{ followingItems ->
+        followingViewModel.getFollowing().observe(viewLifecycleOwner, Observer { followingItems ->
             if (followingItems != null) {
                 adapter.setData(followingItems)
-                showLoading(false)
+                loadingIndicator(false)
             }
         })
     }
 
-    private fun showLoading(state: Boolean) {
+    private fun loadingIndicator(state: Boolean) {
         if (state) {
             progressbarFollowing.visibility = View.VISIBLE
         } else {
-            progressbarFollowing.visibility = View.INVISIBLE
+            progressbarFollowing.visibility = View.GONE
         }
     }
 }

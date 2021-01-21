@@ -24,7 +24,7 @@ class MainViewModel : ViewModel() {
     fun getDataGit(context: Context) {
         val httpClient = AsyncHttpClient()
         val urlClient = "https://api.github.com/users"
-        httpClient.addHeader("Authorization", "token 8a1e321a721463f58be41e64a745f8086a55725c")
+        httpClient.addHeader("Authorization", "token 9449747fad85023dff81d58b2a7e22fdac405a1a")
         httpClient.addHeader("User-Agent", "request")
 
         httpClient.get(urlClient, object : AsyncHttpResponseHandler() {
@@ -69,7 +69,7 @@ class MainViewModel : ViewModel() {
 
     fun getDataSearch(query: String, context: Context) {
         val httpClient = AsyncHttpClient()
-        httpClient.addHeader("Authorization", "token 8a1e321a721463f58be41e64a745f8086a55725c")
+        httpClient.addHeader("Authorization", "token 9449747fad85023dff81d58b2a7e22fdac405a1a")
         httpClient.addHeader("User-Agent", "request")
         var urlClient = "https://api.github.com/search/users?q=$query"
 
@@ -116,7 +116,7 @@ class MainViewModel : ViewModel() {
 
     private fun getDataDetail(id: String, context: Context) {
         val httpClient = AsyncHttpClient()
-        httpClient.addHeader("Authorization", "token 8a1e321a721463f58be41e64a745f8086a55725c")
+        httpClient.addHeader("Authorization", "token 9449747fad85023dff81d58b2a7e22fdac405a1a")
         httpClient.addHeader("User-Agent", "request")
         val urlClient = "https://api.github.com/users/$id"
 

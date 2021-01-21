@@ -12,12 +12,6 @@ import androidx.fragment.app.FragmentPagerAdapter
 class ViewPagerAdapter(private val mContext: Context, fm: FragmentManager) :
         FragmentPagerAdapter(fm, BEHAVIOR_RESUME_ONLY_CURRENT_FRAGMENT) {
 
-    var username = "test"
-
-    companion object {
-        const val USERNAME = "username"
-        const val EXTRA_DETAIL = "extra_detail"
-    }
 
     @StringRes
     private val TAB_TITLES = intArrayOf(R.string.following, R.string.followers)
@@ -27,17 +21,9 @@ class ViewPagerAdapter(private val mContext: Context, fm: FragmentManager) :
         when (position) {
             0 -> {
                 fragment = FragmentFollowing()
-                val mBundle = Bundle()
-                mBundle.putString(EXTRA_DETAIL, getData())
-                fragment.arguments = mBundle
-                Log.d("BundleFragmentVP", fragment.arguments.toString())
             }
             1 -> {
                 fragment = FragmentFollowers()
-                val mBundle = Bundle()
-                mBundle.putString(EXTRA_DETAIL, getData())
-                fragment.arguments = mBundle
-                Log.d("BundleFragmentVP1", fragment.arguments.toString())
             }
         }
         return fragment as Fragment
@@ -50,13 +36,5 @@ class ViewPagerAdapter(private val mContext: Context, fm: FragmentManager) :
 
     override fun getCount(): Int {
         return 2
-    }
-
-    fun setData(user: String) {
-        username = user
-    }
-
-    private fun getData(): String {
-        return username
     }
 }

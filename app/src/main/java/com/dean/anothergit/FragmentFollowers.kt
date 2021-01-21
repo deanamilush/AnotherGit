@@ -13,12 +13,14 @@ import kotlinx.android.synthetic.main.fragment_followers.*
 
 class FragmentFollowers : Fragment() {
 
+    companion object {
+        val TAG = FragmentFollowers::class.java.simpleName
+        const val EXTRA_DETAIL = "extra_detail"
+    }
+
+    private val listData: ArrayList<DataFollowers> = ArrayList()
     private lateinit var adapter: FollowersAdapter
     private lateinit var followerViewModel: FollowersViewModel
-    companion object {
-
-        const val ARG_USERNAME = "username"
-    }
 
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?,
@@ -28,44 +30,40 @@ class FragmentFollowers : Fragment() {
         return inflater.inflate(R.layout.fragment_followers, container, false)
     }
 
-    override fun onActivityCreated(savedInstanceState: Bundle?) {
-        super.onActivityCreated(savedInstanceState)
+    override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
+        super.onViewCreated(view, savedInstanceState)
 
-        showRecyclerView()
-        rvFollowers.setHasFixedSize(true)
-        loadingIndicator(true)
+        adapter = FollowersAdapter(listData)
+        followerViewModel = ViewModelProvider(
+            this, ViewModelProvider.NewInstanceFactory()
+        ).get(FollowersViewModel::class.java)
 
-        Log.d("BundleFragment1", "$savedInstanceState, $arguments")
-        if (arguments != null) {
-            val username = arguments?.getString(ARG_USERNAME)
-            Log.d("BundleFragment1", "$arguments")
-            followerViewModel.setFollowers(username.toString())
-        }
-    }
+        val dataUser = activity!!.intent.getParcelableExtra<DataUsers>(EXTRA_DETAIL) as DataUsers
+        config()
 
-    private fun showRecyclerView() {
-        adapter = FollowersAdapter()
-        adapter.notifyDataSetChanged()
+        followerViewModel.getDataGit(activity!!.applicationContext, dataUser.username.toString())
+        showLoading(true)
 
-        rvFollowers.layoutManager = LinearLayoutManager(context)
-        rvFollowers.adapter = adapter
-
-        followerViewModel = ViewModelProvider(this, ViewModelProvider.NewInstanceFactory())
-                .get(FollowersViewModel::class.java)
-
-        followerViewModel.getFollowers().observe(viewLifecycleOwner, Observer { followerItems ->
-            if (followerItems != null) {
-                adapter.setData(followerItems)
-                loadingIndicator(false)
+        followerViewModel.getListFollower().observe(activity!!, Observer { listFollower ->
+            if (listFollower != null) {
+                adapter.setData(listFollower)
+                showLoading(false)
             }
         })
     }
 
-    private fun loadingIndicator(state: Boolean) {
+    private fun config() {
+        rvFollowers.layoutManager = LinearLayoutManager(activity)
+        rvFollowers.setHasFixedSize(true)
+        rvFollowers.adapter = adapter
+    }
+
+    private fun showLoading(state: Boolean) {
         if (state) {
             progressbarFollowers.visibility = View.VISIBLE
         } else {
-            progressbarFollowers.visibility = View.GONE
+            progressbarFollowers.visibility = View.INVISIBLE
         }
     }
+
 }

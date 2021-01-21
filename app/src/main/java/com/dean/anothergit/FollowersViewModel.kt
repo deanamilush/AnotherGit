@@ -1,6 +1,8 @@
 package com.dean.anothergit
 
+import android.content.Context
 import android.util.Log
+import android.widget.Toast
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
@@ -8,54 +10,106 @@ import com.loopj.android.http.AsyncHttpClient
 import com.loopj.android.http.AsyncHttpResponseHandler
 import cz.msebera.android.httpclient.Header
 import org.json.JSONArray
+import org.json.JSONObject
+import java.lang.Exception
 
 class FollowersViewModel : ViewModel() {
-    val listFollowers = MutableLiveData<ArrayList<DataFollowers>>()
+    private val listFollowerNonMutable = ArrayList<DataFollowers>()
+    private val listFollowerMutable = MutableLiveData<ArrayList<DataFollowers>>()
 
-    fun setFollowers(username: String) {
-    val listItems = ArrayList<DataFollowers>()
+    fun getListFollower(): LiveData<ArrayList<DataFollowers>> {
+        return listFollowerMutable
+    }
 
-    val url = "https://api.github.com/users/$username/followers"
+    fun getDataGit(context: Context, username: String) {
+        val httpClient = AsyncHttpClient()
+        httpClient.addHeader("Authorization", "token 9449747fad85023dff81d58b2a7e22fdac405a1a")
+        httpClient.addHeader("User-Agent", "request")
+        val urlClient = "https://api.github.com/users/$username/followers"
 
-    val asyncClient = AsyncHttpClient()
-    asyncClient.addHeader("Authorization", "token 8a1e321a721463f58be41e64a745f8086a55725c")
-    asyncClient.addHeader("User-Agent", "request")
-    asyncClient.get(url, object : AsyncHttpResponseHandler() {
-        override fun onSuccess(
+        httpClient.get(urlClient, object : AsyncHttpResponseHandler() {
+            override fun onSuccess(
                 statusCode: Int,
                 headers: Array<out Header>?,
                 responseBody: ByteArray
-        ) {
-            try {
-                val result = String(responseBody)
-                val responseObject = JSONArray(result)
+            ) {
+                val result = responseBody?.let { String(it) }
+                Log.d(FragmentFollowers.TAG, result)
+                try {
+                    val jsonArray = JSONArray(result)
+                    for (i in 0 until jsonArray.length()) {
+                        val jsonObject = jsonArray.getJSONObject(i)
+                        val usernameLogin = jsonObject.getString("login")
+                        getDataGitDetail(usernameLogin, context)
+                    }
 
-                for (i in 0 until responseObject.length()) {
-                    val follower = responseObject.getJSONObject(i)
-                    val followerItems = DataFollowers()
-                    followerItems.username = follower.getString("login")
-                    followerItems.avatar = follower.getString("avatar_url")
-                    listItems.add(followerItems)
-                    Log.d("FOLLOWER", url)
+                } catch (e: Exception) {
+                    Toast.makeText(context, e.message, Toast.LENGTH_SHORT).show()
+                    e.printStackTrace()
                 }
-                listFollowers.postValue(listItems)
-            } catch (e: Exception) {
-                Log.d("Follower Exception", e.message.toString())
             }
-        }
 
-        override fun onFailure(
+            override fun onFailure(
                 statusCode: Int,
                 headers: Array<out Header>?,
                 responseBody: ByteArray?,
                 error: Throwable?
-        ) {
-            Log.d("Follower onFailure", error?.message.toString())
-        }
-    })
-}
+            ) {
+                val errorMessage = when (statusCode) {
+                    401 -> "$statusCode : Bad Request"
+                    403 -> "$statusCode : Forbidden"
+                    404 -> "$statusCode : Not Found"
+                    else -> "$statusCode : ${error?.message}"
+                }
+                Toast.makeText(context, errorMessage, Toast.LENGTH_SHORT).show()
+            }
 
-    fun getFollowers(): LiveData<ArrayList<DataFollowers>> {
-    return listFollowers
+        })
+    }
+
+    private fun getDataGitDetail(usernameLogin: String, context: Context) {
+        val httpClient = AsyncHttpClient()
+        httpClient.addHeader("Authorization", "token 9449747fad85023dff81d58b2a7e22fdac405a1a")
+        httpClient.addHeader("User-Agent", "request")
+        val urlClient = "https://api.github.com/users/$usernameLogin"
+
+        httpClient.get(urlClient, object : AsyncHttpResponseHandler() {
+            override fun onSuccess(
+                statusCode: Int,
+                headers: Array<out Header>?,
+                responseBody: ByteArray
+            ) {
+                val result = responseBody?.let { String(it) }
+                Log.d(FragmentFollowers.TAG, result)
+
+                try {
+                    val jsonObject = JSONObject(result)
+                    val usersData = DataFollowers()
+                    usersData.username = jsonObject.getString("login")
+                    usersData.name = jsonObject.getString("name")
+                    listFollowerNonMutable.add(usersData)
+                    listFollowerMutable.postValue(listFollowerNonMutable)
+                } catch (e: Exception) {
+                    Toast.makeText(context, e.message, Toast.LENGTH_SHORT).show()
+                    e.printStackTrace()
+                }
+            }
+
+            override fun onFailure(
+                statusCode: Int,
+                headers: Array<out Header>?,
+                responseBody: ByteArray?,
+                error: Throwable?
+            ) {
+                val errorMessage = when (statusCode) {
+                    401 -> "$statusCode : Bad Request"
+                    403 -> "$statusCode : Forbidden"
+                    404 -> "$statusCode : Not Found"
+                    else -> "$statusCode : ${error?.message}"
+                }
+                Toast.makeText(context, errorMessage, Toast.LENGTH_SHORT).show()
+            }
+
+        })
     }
 }

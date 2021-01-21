@@ -15,37 +15,37 @@ import org.json.JSONObject
 import java.lang.Exception
 
 class FollowingViewModel : ViewModel() {
-    val listFollowings = MutableLiveData<ArrayList<DataFollowing>>()
+    private val listFollowingNonMutable = ArrayList<DataFollowing>()
+    private val listFollowingMutable = MutableLiveData<ArrayList<DataFollowing>>()
 
-    fun setFollowing(username: String) {
-        val listItems = ArrayList<DataFollowing>()
+    fun getListFollowing(): LiveData<ArrayList<DataFollowing>> {
+        return listFollowingMutable
+    }
 
-        val url = "https://api.github.com/users/$username/following"
+    fun getDataGit(context: Context, username: String) {
+        val httpClient = AsyncHttpClient()
+        httpClient.addHeader("Authorization", "token 9449747fad85023dff81d58b2a7e22fdac405a1a")
+        httpClient.addHeader("User-Agent", "request")
+        val urlClient = "https://api.github.com/users/$username/following"
 
-        val asyncClient = AsyncHttpClient()
-        asyncClient.addHeader("Authorization", "token 8a1e321a721463f58be41e64a745f8086a55725c")
-        asyncClient.addHeader("User-Agent", "request")
-        asyncClient.get(url, object : AsyncHttpResponseHandler() {
+        httpClient.get(urlClient, object : AsyncHttpResponseHandler() {
             override fun onSuccess(
                     statusCode: Int,
                     headers: Array<out Header>?,
                     responseBody: ByteArray
             ) {
+                val result = responseBody?.let { String(it) }
+                Log.d(FragmentFollowing.TAG, result)
                 try {
-                    val result = String(responseBody)
-                    val responseObject = JSONArray(result)
-
-                    for (i in 0 until responseObject.length()) {
-                        val following = responseObject.getJSONObject(i)
-                        val followingItems = DataFollowing()
-                        followingItems.username = following.getString("login")
-                        followingItems.avatar = following.getString("avatar_url")
-                        listItems.add(followingItems)
-                        Log.d("FOLLOWING", url)
+                    val jsonArray = JSONArray(result)
+                    for (i in 0 until jsonArray.length()) {
+                        val jsonObject = jsonArray.getJSONObject(i)
+                        val usernameLogin = jsonObject.getString("login")
+                        getDataGitDetail(usernameLogin, context)
                     }
-                    listFollowings.postValue(listItems)
                 } catch (e: Exception) {
-                    Log.d("Following Exception", e.message.toString())
+                    Toast.makeText(context, e.message, Toast.LENGTH_SHORT).show()
+                    e.printStackTrace()
                 }
             }
 
@@ -55,12 +55,62 @@ class FollowingViewModel : ViewModel() {
                     responseBody: ByteArray?,
                     error: Throwable?
             ) {
-                Log.d("Following onFailure", error?.message.toString())
+                val errorMessage = when (statusCode) {
+                    401 -> "$statusCode : Bad Request"
+                    403 -> "$statusCode : Forbidden"
+                    404 -> "$statusCode : Not Found"
+                    else -> "$statusCode : ${error?.message}"
+                }
+                Toast.makeText(context, errorMessage, Toast.LENGTH_SHORT).show()
             }
+
         })
     }
 
-    fun getFollowing(): LiveData<ArrayList<DataFollowing>> {
-        return listFollowings
+    private fun getDataGitDetail(usernameLogin: String, context: Context) {
+        val httpClient = AsyncHttpClient()
+        httpClient.addHeader("Authorization", "token 9449747fad85023dff81d58b2a7e22fdac405a1a")
+        httpClient.addHeader("User-Agent", "request")
+        val urlClient = "https://api.github.com/users/$usernameLogin"
+
+        httpClient.get(urlClient, object : AsyncHttpResponseHandler() {
+            override fun onSuccess(
+                    statusCode: Int,
+                    headers: Array<out Header>?,
+                    responseBody: ByteArray
+            ) {
+                val result = responseBody?.let { String(it) }
+                Log.d(FragmentFollowing.TAG, result)
+
+                try {
+                    val jsonObject = JSONObject(result)
+                    val usersData = DataFollowing()
+                    usersData.username = jsonObject.getString("login")
+                    usersData.name = jsonObject.getString("name")
+                    usersData.avatar = jsonObject.getString("avatar_url")
+                    listFollowingNonMutable.add(usersData)
+                    listFollowingMutable.postValue(listFollowingNonMutable)
+                } catch (e: Exception) {
+                    Toast.makeText(context, e.message, Toast.LENGTH_SHORT).show()
+                    e.printStackTrace()
+                }
+            }
+
+            override fun onFailure(
+                    statusCode: Int,
+                    headers: Array<out Header>?,
+                    responseBody: ByteArray?,
+                    error: Throwable?
+            ) {
+                val errorMessage = when (statusCode) {
+                    401 -> "$statusCode : Bad Request"
+                    403 -> "$statusCode : Forbidden"
+                    404 -> "$statusCode : Not Found"
+                    else -> "$statusCode : ${error?.message}"
+                }
+                Toast.makeText(context, errorMessage, Toast.LENGTH_SHORT).show()
+            }
+
+        })
     }
 }

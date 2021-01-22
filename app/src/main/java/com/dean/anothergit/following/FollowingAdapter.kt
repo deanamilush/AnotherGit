@@ -1,4 +1,4 @@
-package com.dean.anothergit
+package com.dean.anothergit.following
 
 import android.view.LayoutInflater
 import android.view.View
@@ -6,8 +6,8 @@ import android.view.ViewGroup
 import androidx.recyclerview.widget.RecyclerView
 import com.bumptech.glide.Glide
 import com.bumptech.glide.request.RequestOptions
+import com.dean.anothergit.R
 import kotlinx.android.synthetic.main.item_following.view.*
-import kotlinx.android.synthetic.main.item_user.view.*
 
 class FollowingAdapter(private val listFollowing: ArrayList<DataFollowing>)
     : RecyclerView.Adapter<FollowingAdapter.ListDataHolder>() {

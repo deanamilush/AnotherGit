@@ -1,7 +1,6 @@
-package com.dean.anothergit
+package com.dean.anothergit.following
 
 import android.os.Bundle
-import android.util.Log
 import androidx.fragment.app.Fragment
 import android.view.LayoutInflater
 import android.view.View
@@ -9,9 +8,9 @@ import android.view.ViewGroup
 import androidx.lifecycle.Observer
 import androidx.lifecycle.ViewModelProvider
 import androidx.recyclerview.widget.LinearLayoutManager
+import com.dean.anothergit.main.DataUsers
+import com.dean.anothergit.R
 import kotlinx.android.synthetic.main.fragment_following.*
-import org.json.JSONArray
-import org.json.JSONObject
 
 class FragmentFollowing : Fragment() {
 

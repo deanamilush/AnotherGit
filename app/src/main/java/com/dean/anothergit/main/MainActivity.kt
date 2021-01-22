@@ -1,4 +1,4 @@
-package com.dean.anothergit
+package com.dean.anothergit.main
 
 import android.app.SearchManager
 import android.content.Context
@@ -14,6 +14,8 @@ import androidx.appcompat.widget.SearchView
 import androidx.lifecycle.Observer
 import androidx.lifecycle.ViewModelProvider
 import androidx.recyclerview.widget.LinearLayoutManager
+import com.dean.anothergit.R
+import com.dean.anothergit.adapter.DataUsersAdapter
 import com.dean.anothergit.databinding.ActivityMainBinding
 import kotlinx.android.synthetic.main.activity_main.*
 class MainActivity : AppCompatActivity() {

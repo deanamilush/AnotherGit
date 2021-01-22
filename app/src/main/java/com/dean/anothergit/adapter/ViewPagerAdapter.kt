@@ -1,13 +1,14 @@
-package com.dean.anothergit
+package com.dean.anothergit.adapter
 
 import android.content.Context
-import android.os.Bundle
-import android.util.Log
 import androidx.annotation.Nullable
 import androidx.annotation.StringRes
 import androidx.fragment.app.Fragment
 import androidx.fragment.app.FragmentManager
 import androidx.fragment.app.FragmentPagerAdapter
+import com.dean.anothergit.R
+import com.dean.anothergit.followers.FragmentFollowers
+import com.dean.anothergit.following.FragmentFollowing
 
 class ViewPagerAdapter(private val mContext: Context, fm: FragmentManager) :
         FragmentPagerAdapter(fm, BEHAVIOR_RESUME_ONLY_CURRENT_FRAGMENT) {

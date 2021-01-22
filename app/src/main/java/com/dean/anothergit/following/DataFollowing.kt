@@ -1,10 +1,10 @@
-package com.dean.anothergit
+package com.dean.anothergit.following
 
 import android.os.Parcelable
 import kotlinx.android.parcel.Parcelize
 
 @Parcelize
-data class DataFollowers(
+data class DataFollowing(
         var username: String? = null,
         var name: String? = null,
         var avatar: String? = null

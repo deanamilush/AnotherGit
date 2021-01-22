@@ -1,17 +1,15 @@
-package com.dean.anothergit
+package com.dean.anothergit.main
 
-import android.content.Intent
 import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
-import android.widget.Toast
 import androidx.viewpager.widget.ViewPager
 import com.bumptech.glide.Glide
 import com.bumptech.glide.request.RequestOptions
+import com.dean.anothergit.R
+import com.dean.anothergit.adapter.ViewPagerAdapter
 import com.google.android.material.tabs.TabLayout
 import kotlinx.android.synthetic.main.activity_detail.*
 import kotlinx.android.synthetic.main.activity_detail.user_name
-import kotlinx.android.synthetic.main.item_user.*
-import kotlinx.android.synthetic.main.item_user.view.*
 
 class DetailActivity : AppCompatActivity() {
 

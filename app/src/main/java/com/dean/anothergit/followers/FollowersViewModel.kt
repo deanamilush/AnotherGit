@@ -23,7 +23,7 @@ class FollowersViewModel : ViewModel() {
 
     fun getDataGit(context: Context, username: String) {
         val httpClient = AsyncHttpClient()
-        httpClient.addHeader("Authorization", "token 69d133baa33d2bad073102c585857940253df303")
+        httpClient.addHeader("Authorization", "token 7a1b8b6476ecbacc104337c3840d504baab33d46")
         httpClient.addHeader("User-Agent", "request")
         val urlClient = "https://api.github.com/users/$username/followers"
 
@@ -69,7 +69,7 @@ class FollowersViewModel : ViewModel() {
 
     private fun getDataGitDetail(usernameLogin: String, context: Context) {
         val httpClient = AsyncHttpClient()
-        httpClient.addHeader("Authorization", "token 69d133baa33d2bad073102c585857940253df303")
+        httpClient.addHeader("Authorization", "token 7a1b8b6476ecbacc104337c3840d504baab33d46")
         httpClient.addHeader("User-Agent", "request")
         val urlClient = "https://api.github.com/users/$usernameLogin"
 

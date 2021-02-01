@@ -6,6 +6,8 @@ import android.widget.Toast
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
+import com.dean.anothergit.main.DataUsers
+import com.dean.anothergit.main.MainActivity
 import com.loopj.android.http.AsyncHttpClient
 import com.loopj.android.http.AsyncHttpResponseHandler
 import cz.msebera.android.httpclient.Header
@@ -24,7 +26,7 @@ class MainViewModel : ViewModel() {
     fun getDataGit(context: Context) {
         val httpClient = AsyncHttpClient()
         val urlClient = "https://api.github.com/users"
-        httpClient.addHeader("Authorization", "token 3af2debd7f817177d112ffed4c98f1a1aea8ed57")
+        httpClient.addHeader("Authorization", "token 7a1b8b6476ecbacc104337c3840d504baab33d46")
         httpClient.addHeader("User-Agent", "request")
 
         httpClient.get(urlClient, object : AsyncHttpResponseHandler() {
@@ -69,7 +71,7 @@ class MainViewModel : ViewModel() {
 
     fun getDataSearch(query: String, context: Context) {
         val httpClient = AsyncHttpClient()
-        httpClient.addHeader("Authorization", "token 3af2debd7f817177d112ffed4c98f1a1aea8ed57")
+        httpClient.addHeader("Authorization", "token 7a1b8b6476ecbacc104337c3840d504baab33d46")
         httpClient.addHeader("User-Agent", "request")
         var urlClient = "https://api.github.com/search/users?q=$query"
 
@@ -116,7 +118,7 @@ class MainViewModel : ViewModel() {
 
     private fun getDataDetail(id: String, context: Context) {
         val httpClient = AsyncHttpClient()
-        httpClient.addHeader("Authorization", "token 3af2debd7f817177d112ffed4c98f1a1aea8ed57")
+        httpClient.addHeader("Authorization", "token 7a1b8b6476ecbacc104337c3840d504baab33d46")
         httpClient.addHeader("User-Agent", "request")
         val urlClient = "https://api.github.com/users/$id"
 

@@ -14,6 +14,7 @@ import androidx.appcompat.widget.SearchView
 import androidx.lifecycle.Observer
 import androidx.lifecycle.ViewModelProvider
 import androidx.recyclerview.widget.LinearLayoutManager
+import com.dean.anothergit.MainViewModel
 import com.dean.anothergit.R
 import com.dean.anothergit.adapter.DataUsersAdapter
 import com.dean.anothergit.databinding.ActivityMainBinding

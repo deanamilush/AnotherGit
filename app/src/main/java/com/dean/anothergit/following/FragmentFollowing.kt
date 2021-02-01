@@ -19,7 +19,6 @@ class FragmentFollowing : Fragment() {
         const val EXTRA_DETAIL = "extra_detail"
     }
 
-    private var bool: Boolean = false
     private var listData: ArrayList<DataFollowing> = ArrayList()
     private lateinit var adapter: FollowingAdapter
     private lateinit var followingViewModel: FollowingViewModel
@@ -40,16 +39,16 @@ class FragmentFollowing : Fragment() {
                 this, ViewModelProvider.NewInstanceFactory()
         ).get(FollowingViewModel::class.java)
 
-        val dataUser = activity!!.intent.getParcelableExtra<DataUsers>(EXTRA_DETAIL) as DataUsers
+        val dataUser = requireActivity().intent.getParcelableExtra<DataUsers>(EXTRA_DETAIL) as DataUsers
         config()
 
         followingViewModel.getDataGit(
-                activity!!.applicationContext,
+                requireActivity().applicationContext,
                 dataUser.username.toString()
         )
         showLoading(true)
 
-        followingViewModel.getListFollowing().observe(activity!!, Observer { listFollowing ->
+        followingViewModel.getListFollowing().observe(requireActivity(), Observer { listFollowing ->
             if (listFollowing != null) {
                 adapter.setData(listFollowing)
                 showLoading(false)

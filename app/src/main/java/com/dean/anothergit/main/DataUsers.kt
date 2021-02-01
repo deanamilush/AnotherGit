@@ -1,4 +1,4 @@
-package com.dean.anothergit
+package com.dean.anothergit.main
 
 import android.os.Parcelable
 import kotlinx.android.parcel.Parcelize

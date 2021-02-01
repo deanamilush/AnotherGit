@@ -1,15 +1,15 @@
-package com.dean.anothergit
+package com.dean.anothergit.main
 
 import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
 import androidx.viewpager.widget.ViewPager
 import com.bumptech.glide.Glide
 import com.bumptech.glide.request.RequestOptions
+import com.dean.anothergit.R
+import com.dean.anothergit.adapter.ViewPagerAdapter
 import com.google.android.material.tabs.TabLayout
 import kotlinx.android.synthetic.main.activity_detail.*
 import kotlinx.android.synthetic.main.activity_detail.user_name
-import kotlinx.android.synthetic.main.item_user.*
-import kotlinx.android.synthetic.main.item_user.view.*
 
 class DetailActivity : AppCompatActivity() {
 
@@ -23,20 +23,14 @@ class DetailActivity : AppCompatActivity() {
 
         setData()
 
+
         val viewPagerAdapter = ViewPagerAdapter(this, supportFragmentManager)
-        viewPagerAdapter.setData(EXTRA_DETAIL)
         val viewPager: ViewPager = findViewById(R.id.view_pager)
         viewPager.adapter = viewPagerAdapter
         val tabs: TabLayout = findViewById(R.id.tabs)
         tabs.setupWithViewPager(viewPager)
         supportActionBar?.elevation = 0f
 
-        val mBundle = Bundle()
-        mBundle.putString(FragmentFollowers.ARG_USERNAME, EXTRA_DETAIL)
-        val mFollowerFragment = FragmentFollowers()
-        mFollowerFragment.arguments = mBundle
-        val mFollowingFragment = FragmentFollowing()
-        mFollowingFragment.arguments = mBundle
     }
 
 
